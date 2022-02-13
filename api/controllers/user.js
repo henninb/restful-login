@@ -4,8 +4,9 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
-exports.user_signup = (req, res, next) => {
+exports.userSignup = (req, res) => {
   User.find({ email: req.body.email })
+  //User.find({ email: 'test' })
     .exec()
     .then(user => {
       if (user.length >= 1) {
@@ -14,6 +15,7 @@ exports.user_signup = (req, res, next) => {
         });
       } else {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
+        // bcrypt.hash('pass', 10, (err, hash) => {
           if (err) {
             return res.status(500).json({
               error: err
@@ -44,7 +46,7 @@ exports.user_signup = (req, res, next) => {
     });
 };
 
-exports.user_login = (req, res, next) => {
+exports.userLogin = (req, res, next) => {
   User.find({ email: req.body.email })
     .exec()
     .then(user => {
@@ -88,7 +90,7 @@ exports.user_login = (req, res, next) => {
     });
 };
 
-exports.user_delete = (req, res, next) => {
+exports.userDelete = (req, res) => {
   User.remove({ _id: req.params.userId })
     .exec()
     .then(result => {
