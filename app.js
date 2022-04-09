@@ -8,13 +8,9 @@ const mongoose = require("mongoose");
 // const orderRoutes = require("./api/routes/orders");
 const userRoutes = require('./api/routes/user');
 
-mongoose.connect(
-  "mongodb://localhost:27017/user_db",
 
-  {
-    useMongoClient: true
-  }
-);
+mongoose.connect('mongodb://localhost/user_db');
+// mongoose.connect("mongodb://localhost:27017/user_db", { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 app.use(morgan("dev"));
@@ -40,7 +36,7 @@ app.use((req, res, next) => {
 // app.use("/orders", orderRoutes);
 app.use("/user", userRoutes);
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   const error = new Error("route not found");
   error.status = 404;
   next(error);
